@@ -1,0 +1,65 @@
+a)
+SELECT MAX(Invoice.Total), *
+FROM Invoice;
+
+SELECT MIN(Invoice.Total), *
+FROM Invoice;
+
+Alternativa para ofrecer todos los posibles resultados con el valor minimo o maximo:
+select *
+from Invoice
+where Invoice.Total = (select MIN(Invoice.Total) from Invoice);
+
+b)
+SELECT Invoice.BillingCity, COUNT(*) AS Invoice_num
+FROM Invoice
+GROUP BY Invoice.BillingCity
+ORDER BY Invoice_num DESC;
+
+c)
+Primera posible solucion
+SELECT COUNT(*)
+FROM Track
+JOIN MediaType ON Track.MediaTypeId=MediaType.MediaTypeId
+WHERE MediaType.Name='Protected AAC audio file';
+
+Segunda posible solucion
+SELECT MediaType.Name, COUNT(*)
+FROM Track
+JOIN MediaType ON MediaType.MediaTypeId = Track.MediaTypeId
+GROUP BY Track.MediaTypeId;
+
+d)
+Primera posible solucion
+SELECT Artist.Name, COUNT(*) as Album_num
+FROM Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+GROUP BY Album.ArtistId
+ORDER BY Album_num DESC;
+
+Segunda posible solucion
+SELECT COUNT(Artist.Name) AS Alb_count, Artist.Name AS Art_name 
+FROM Artist
+INNER JOIN Album ON Album.ArtistId=Artist.ArtistId
+GROUP BY Artist.ArtistId
+ORDER BY -COUNT(Artist.Name)
+
+e)
+SELECT Genre.Name, COUNT(*) as Track_num
+FROM Genre
+JOIN Track ON Track.GenreId = Genre.GenreId
+GROUP BY Track.GenreId
+ORDER BY Track_num DESC;
+
+f)
+SELECT Customer.FirstName, Customer.LastName, SUM(Invoice.Total) AS Invoice_sum
+FROM Customer
+JOIN Invoice ON Invoice.CustomerId = Customer.CustomerId
+GROUP BY Invoice.CustomerId
+ORDER BY Invoice_sum DESC;
+
+g)
+SELECT Invoice.InvoiceId, Track.Name
+FROM Invoice
+JOIN InvoiceLine ON InvoiceLine.InvoiceId = Invoice.InvoiceId
+JOIN Track ON InvoiceLine.TrackId = Track.TrackId;
